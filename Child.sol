@@ -24,7 +24,7 @@ contract ChildFactory{
         uint _childNumber,
         address _childAddress,
         address _owner
-    )
+    );
     event childAbandoned(
         uint _timeStamp,
         uint _childNumber,
@@ -84,11 +84,11 @@ contract ChildFactory{
     function abandonChild(uint index)external{
         require(ownerOfChild[index] == msg.sender, 'Not your child');
         delete ownerOfChild[index];
-        emit childAbandoned(block.timestamp, index, address(children[i]), msg.sender)
+        emit childAbandoned(block.timestamp, index, address(children[index]), msg.sender);
     }
     function transferChild(address to, uint index)external{
         require(ownerOfChild[index] == msg.sender, 'Not your child');
         ownerOfChild[index] = to;
-        emit childTransfered(block.timestamp, index, address(children[i]), msg.sender, to);
+        emit childTransfered(block.timestamp, index, address(children[index]), msg.sender, to);
     }
 }
