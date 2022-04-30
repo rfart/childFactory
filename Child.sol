@@ -3,7 +3,7 @@ pragma solidity 0.8.7;
 
 
 contract Child {
-    uint immutable childNumber;
+    uint immutable public childNumber;
     constructor(uint _x){
         childNumber = _x;
     }
@@ -18,6 +18,25 @@ contract ChildFactory{
         uint _childNumber,
         address _childAddress,
         address _owner
+    );
+    event childAdopted(
+        uint _timeStamp,
+        uint _childNumber,
+        address _childAddress,
+        address _owner
+    )
+    event childDeleted(
+        uint _timeStamp,
+        uint _childNumber,
+        address _childAddress,
+        address _owner
+    );
+    event childTransfered(
+        uint _timeStamp,
+        uint _childNumber,
+        address _childAddress,
+        address _oldOwner,
+        address _newOwner
     );
 
     // Fill index[0] of children
@@ -53,6 +72,7 @@ contract ChildFactory{
                 }
                 else if(ownerOfChild[i] == address(0)){
                     ownerOfChild[i] = msg.sender;
+                    emit childAdopted(block.timestamp, i, address(children[i]), msg.sender);
                     return;
                 }
                 unchecked{++i;}
@@ -64,9 +84,11 @@ contract ChildFactory{
     function deleteChild(uint index)external{
         require(ownerOfChild[index] == msg.sender, 'Not your child');
         delete ownerOfChild[index];
+        emit childDeleted(block.timestamp, index, address(children[i]), msg.sender)
     }
     function transferChild(address to, uint index)external{
         require(ownerOfChild[index] == msg.sender, 'Not your child');
         ownerOfChild[index] = to;
+        emit childTransfered(block.timestamp, index, address(children[i]), msg.sender, to);
     }
 }
