@@ -3,7 +3,7 @@ pragma solidity 0.8.7;
 
 
 contract Child {
-    uint childNumber;
+    uint immutable childNumber;
     constructor(uint _x){
         childNumber = _x;
     }
