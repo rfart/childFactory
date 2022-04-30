@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: Unidentified
 pragma solidity 0.8.7;
 
+
 contract Child {
     uint childNumber;
     constructor(uint _x){
         childNumber = _x;
     }
 }
+
 
 contract ChildFactory{
     Child[] public children;
@@ -18,15 +20,20 @@ contract ChildFactory{
         address _owner
     );
 
+    // Fill index[0] of children
     constructor(){
         Child child = new Child(0);
         children.push(child);
     }
     
+    // Number of children were created
     function getChildNumber()private view returns(uint) {
         return children.length;
     }
 
+    // @param justCreate: ignore the childrens with no owner and just create a new children
+    // @param justCreate: if false, it will adopt 1 of the oldest children with no owner
+    // or create new children if all childrens were have owner
     function createOrAdoptChild(bool justCreate)external{
         if(justCreate){
             uint number = getChildNumber();
