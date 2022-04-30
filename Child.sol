@@ -25,7 +25,7 @@ contract ChildFactory{
         address _childAddress,
         address _owner
     )
-    event childDeleted(
+    event childAbandoned(
         uint _timeStamp,
         uint _childNumber,
         address _childAddress,
@@ -81,10 +81,10 @@ contract ChildFactory{
 
     }
 
-    function deleteChild(uint index)external{
+    function abandonChild(uint index)external{
         require(ownerOfChild[index] == msg.sender, 'Not your child');
         delete ownerOfChild[index];
-        emit childDeleted(block.timestamp, index, address(children[i]), msg.sender)
+        emit childAbandoned(block.timestamp, index, address(children[i]), msg.sender)
     }
     function transferChild(address to, uint index)external{
         require(ownerOfChild[index] == msg.sender, 'Not your child');
